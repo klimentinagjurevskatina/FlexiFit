@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тренинзи за Инструктор</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #4CAF50; /* Зелена боја за header */
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #4CAF50;
+            text-align: center;
+        }
+
+        form {
+            margin-bottom: 40px;
+        }
+
+        input[type="date"], input[type="time"], input[type="number"], select, input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 12px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .reservations-list, .my-terms {
+            margin-top: 40px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        td {
+            background-color: #f9f9f9;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        label {
+            font-size: 16px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Добредојдовте, Инструктор!</h1>
+    <p>Овде можете да внесете нови термини за тренинг и да ги прегледате резервациите со оценките.</p>
+</header>
+
+<div class="container">
+    <h2>Внесете нов термин</h2>
+
+    <form method="POST" action="/instruktor">
+
+        <div class="form-section">
+            <label for="terminId">ID на термин</label>
+            <input type="number" id="terminId" name="terminId" required>
+        </div>
+
+        <div class="form-section">
+            <label for="treningId">ID на тренинг</label>
+            <input type="number" id="treningId" name="treningId" required>
+        </div>
+
+        <div class="form-section">
+            <label for="tipTrening">Тип на тренинг</label>
+            <input type="text" id="tipTrening" name="tipTrening" required>
+        </div>
+
+        <div class="form-section">
+            <label for="pocetok">Почеток на тренинг (HH:MM)</label>
+            <input type="time" id="pocetok" name="pocetok" required>
+        </div>
+
+        <div class="form-section">
+            <label for="vremetraenje">Времетраење на тренинг (во минути)</label>
+            <input type="number" id="vremetraenje" name="vremetraenje" required>
+        </div>
+
+        <div class="form-section">
+            <label for="datum">Датум на тренинг</label>
+            <input type="date" id="datum" name="datum" required>
+        </div>
+
+        <button type="submit">Додај термин</button>
+    </form>
+
+    <!-- "My Terms" Section -->
+    <div class="my-terms">
+        <h2>Прикажи термини</h2>
+
+        <table id="termsTable">
+            <thead>
+            <tr>
+                <th>Датум</th>
+                <th>Почеток</th>
+                <th>Времетраење</th>
+                <th>Тип</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="termin : ${termini}">
+                <td th:text="${termin.datum}"></td>
+                <td th:text="${termin.pocetok}"></td>
+                <td th:text="${termin.vremetraenje} + ' минути'"></td>
+                <td th:text="${termin.getTrening().tip}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <h2>Прикажи Резервации за термини</h2>
+    <table id="reservationsTable">
+        <thead>
+        <tr>
+            <th>Датум на Резервација</th>
+            <th>Почеток</th>
+            <th>Клиент</th>
+            <th>Тип на тренинг</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="rezervacija : ${rezervacii}">
+            <td th:text="${rezervacija.getTermin().datum}"></td>
+            <td th:text="${rezervacija.getTermin().pocetok}"></td>
+            <td th:text="${rezervacija.getUserIdKlientRez().getIme() + ' ' + rezervacija.getUserIdKlientRez().getPrezime()}"></td>
+            <td th:text="${rezervacija.getTermin().getTrening().tip}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<script>
+    // You can add any JavaScript here if needed
+</script>
+
+</body>
+</html>

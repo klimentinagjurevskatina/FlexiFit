@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Панел за Клиент</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #4CAF50; /* Зелен header */
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      color: #4CAF50;
+      text-align: center;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+
+    th {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    td {
+      background-color: #f9f9f9;
+    }
+
+    .reservation-form {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 30px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-section {
+      margin-bottom: 20px;
+    }
+
+    .form-section label {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 8px;
+      color: #4CAF50;
+    }
+
+    .form-section input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    .form-section input:focus {
+      border-color: #4CAF50;
+      outline: none;
+    }
+
+    .form-actions {
+      text-align: center;
+    }
+
+    .submit-btn {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .submit-btn:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Добредојдовте, Клиент!</h1>
+  <p>Овде можете да ги прегледате достапните термини.</p>
+</header>
+
+<div class="container">
+  <h2>Достапни термини</h2>
+
+  <table id="termsTable">
+    <thead>
+    <tr>
+      <th>Ид</th>
+      <th>Датум</th>
+      <th>Почеток</th>
+      <th>Времетраење</th>
+      <th>Инструктор</th>
+      <th>Тип</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <th:block th:each="termin : ${termini}">
+      <tr>
+        <td th:text="${termin.id}"></td>
+        <td th:text="${termin.datum}"></td>
+        <td th:text="${termin.pocetok}"></td>
+        <td th:text="${termin.vremetraenje} + ' минути'"></td>
+        <td th:text="${termin.getInstruktor().getIme() + termin.getInstruktor().getPrezime()}"></td>
+        <td th:text="${termin.getTrening().tip}"></td>
+
+      </tr>
+    </th:block>
+    </tbody>
+  </table>
+</div>
+
+<h2>Внесете нова резервација</h2>
+
+<form method="POST" action="/klient" class="reservation-form">
+
+  <div class="form-section">
+    <label for="terminId">ID на термин:</label>
+    <input type="number" id="terminId" name="terminId" required placeholder="Внесете ID на термин">
+  </div>
+
+  <div class="form-section">
+    <label for="rezId">ID на тренинг:</label>
+    <input type="number" id="rezId" name="rezId" required placeholder="Внесете ID на тренинг">
+  </div>
+
+  <div class="form-actions">
+    <button type="submit" class="submit-btn">Додај резервација</button>
+  </div>
+</form>
+
+</body>
+</html>

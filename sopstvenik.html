@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="mk" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панел за Сопственик</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #4CAF50;
+            text-align: left; /* Align the header text to the left */
+            padding-left: 10px; /* Add some padding to the left */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        td {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Добредојдовте, Сопственик!</h1>
+    <p>Овде можете да ги прегледате сите термини од базата на податоци.</p>
+</header>
+
+<div class="container">
+    <h2>Прикажи термини</h2>
+
+    <table id="termsTable">
+        <thead>
+        <tr>
+            <th>Датум</th>
+            <th>Почеток</th>
+            <th>Времетраење</th>
+            <th>Инструктор</th>
+            <th>Тип</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="termin : ${termini}">
+            <td th:text="${termin.datum}"></td>
+            <td th:text="${termin.pocetok}"></td>
+            <td th:text="${termin.vremetraenje} + ' минути'"></td>
+            <td th:text="${termin.getInstruktor().getIme() + termin.getInstruktor().getPrezime()}"></td>
+            <td th:text="${termin.getTrening().tip}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- New Table for Reservations -->
+    <h2>Прикажи Резервации за термини</h2>
+    <table id="reservationsTable">
+        <thead>
+        <tr>
+            <th>Датум на Резервација</th>
+            <th>Почеток</th>
+            <th>Инструктор</th>
+            <th>Клиент</th>
+            <th>Тип на тренинг</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="rezervacija : ${rezervacii}">
+            <td th:text="${rezervacija.getTermin().datum}"></td>
+            <td th:text="${rezervacija.getTermin().pocetok}"></td>
+            <td th:text="${rezervacija.getTermin().getInstruktor().getIme() + ' ' + rezervacija.getTermin().getInstruktor().getPrezime()}"></td>
+            <td th:text="${rezervacija.getUserIdKlientRez().getIme() + ' ' + rezervacija.getUserIdKlientRez().getPrezime()}"></td>
+            <td th:text="${rezervacija.getTermin().getTrening().tip}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h2>Прикажи Оценки за термини</h2>
+    <table id="ocenkaTable">
+        <thead>
+        <tr>
+            <th>Датум на термин</th>
+            <th>Почеток</th>
+            <th>Инструктор</th>
+            <th>Клиент</th>
+            <th>Оценка</th>
+            <th>Коментар</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="ocenka : ${ocenki}">
+            <td th:text="${ocenka.getRez().getTermin().datum}"></td>
+            <td th:text="${ocenka.getRez().getTermin().pocetok}"></td>
+            <td th:text="${ocenka.getRez().getTermin().getInstruktor().getIme() + ' ' + ocenka.getRez().getTermin().getInstruktor().getPrezime()}"></td>
+            <td th:text="${ocenka.getRez().getUserIdKlientRez().getIme() + ' ' + ocenka.getRez().getUserIdKlientRez().getPrezime()}"></td>
+            <td th:text="${ocenka.vrednost}"></td>
+            <td th:text="${ocenka.komentar}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
